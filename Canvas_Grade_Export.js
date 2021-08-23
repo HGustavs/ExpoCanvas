@@ -64,7 +64,7 @@ function makebutton()
                       var assignmentid=grades[k].className.substr(grades[k].className.indexOf("_")+1);
                       outgrades.push(theaders["a"+assignmentid]);
                     }
-                    console.log(outgrades);
+                    thedata.push(outgrades);
                 }
 
                 // All other rows generate data
@@ -75,11 +75,14 @@ function makebutton()
                   var grade=grades[k].innerText;
                   outgrades.push({assignment:assignmentid, grade:grade});
                 }
-                console.log(outgrades);
+                thedata.push(outgrades);
             }                          
         }
 
         // Produce output
+        var str="";
+
+        console.log(thedata);
 
     });   
 }
