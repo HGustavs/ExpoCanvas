@@ -81,6 +81,25 @@ function makebutton()
 
         // Produce output
         var str="";
+      
+      	for(var i=0;i<thedata.length;i++){
+          	if(i==0){
+                for(var j=0;j<thedata[i].length;j++){
+                    if(j>0) str+=",";
+                    str+=thedata[i][j];
+                }
+            }else{
+                for(var j=0;j<thedata[i].length;j++){
+                    if(j>0) str+=",";
+                    if(j==0){
+                        str+=thedata[i][j];
+                    }else{
+                        str+=thedata[i][j].grade;
+                    }
+                }
+            }
+          	str+="\n";
+        }
 
         console.log(thedata);
 
