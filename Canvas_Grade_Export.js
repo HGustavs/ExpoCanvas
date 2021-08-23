@@ -12,7 +12,6 @@ setTimeout(function(){ makebutton(); }, 5000);
 
 function makebutton()
 {
-  	alert("Hello!  ");
 		var test = document.getElementsByClassName("gradebook-menus");
   	for (var i=0; i<test.length; i++) {
         test[i].innerHTML="<button id='hulk'>Export</button>"+test[i].innerHTML;
@@ -26,10 +25,13 @@ function makebutton()
             var test = sven[j].getElementsByClassName("slick-row");
             for (var i=0; i<test.length; i++) {
                 studid=test[i].className.substr(test[i].className.indexOf("_")+1);
+                var students=test[i].getElementsByTagName("a");
+                //alert(students.length);
+                for (var k=0; k<students.length; k++) {
+                    alert(students[k].innerHTML);
+                }
             }
-            var student=test[i].getElementsByTagName("a");
-            alert(student.innerHTML);        
+            
         }
-    });
-    
+    });   
 }
