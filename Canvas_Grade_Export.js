@@ -35,7 +35,6 @@ function makebutton()
 
         var sven = document.getElementsByClassName("viewport_1");
         var thedata=[];
-
         for(var j=0;j<sven.length;j++){
             var test = sven[j].getElementsByClassName("slick-row");
             console.log(test.length);
@@ -44,12 +43,22 @@ function makebutton()
                 var grades=test[i].getElementsByClassName("assignment");
                 for (var k=0; k<grades.length; k++) {
                     assignmentid=grades[k].className.substr(grades[k].className.indexOf("_")+1);
-                    console.log(assignmentid);     
+                    // console.log(assignmentid+" "+grades[k].innerText);     
                 }
                 
             }                          
         }
 
+        var sven = document.getElementsByClassName("headers_1");
+        var theaders=[];
+        for(var j=0;j<sven.length;j++){
+            var test = sven[j].getElementsByClassName("slick-header-column");
+            for (var i=0; i<test.length; i++) {
+                var assignmentid=test[i].className.substr(test[i].className.indexOf("_")+1);
+                var title=test[i].title;
+                console.log(assignmentid+" "+title);
+            }            
+        }
 
     });   
 }
