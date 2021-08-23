@@ -28,10 +28,10 @@ function makebutton()
                 var students=test[i].getElementsByTagName("a");
                 //alert(students.length);
                 for (var k=0; k<students.length; k++) {
-                    alert(students[k].innerHTML);
+                    stud[studid]=students[k].innerHTML;
                 }
-            }
-            
+            }            
         }
+        console.log(stud);
     });   
 }
