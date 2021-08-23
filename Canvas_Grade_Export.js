@@ -23,15 +23,33 @@ function makebutton()
         var stud=[];
         for(var j=0;j<sven.length;j++){
             var test = sven[j].getElementsByClassName("slick-row");
+            console.log(test.length);
             for (var i=0; i<test.length; i++) {
                 studid=test[i].className.substr(test[i].className.indexOf("_")+1);
                 var students=test[i].getElementsByTagName("a");
-                //alert(students.length);
                 for (var k=0; k<students.length; k++) {
-                    stud[studid]=students[k].innerHTML;
+                    stud["s"+studid]=students[k].innerHTML;
                 }
             }            
         }
-        console.log(stud);
+
+        var sven = document.getElementsByClassName("viewport_1");
+        var thedata=[];
+
+        for(var j=0;j<sven.length;j++){
+            var test = sven[j].getElementsByClassName("slick-row");
+            console.log(test.length);
+            for (var i=0; i<test.length; i++) {
+                studid=test[i].className.substr(test[i].className.indexOf("_")+1);
+                var grades=test[i].getElementsByClassName("assignment");
+                for (var k=0; k<grades.length; k++) {
+                    assignmentid=grades[k].className.substr(grades[k].className.indexOf("_")+1);
+                    console.log(assignmentid);     
+                }
+                
+            }                          
+        }
+
+
     });   
 }
