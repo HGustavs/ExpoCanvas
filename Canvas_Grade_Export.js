@@ -62,7 +62,7 @@ function makebutton()
                     outgrades.push("Student");
                     for (var k=0; k<grades.length; k++) {
                       var assignmentid=grades[k].className.substr(grades[k].className.indexOf("_")+1);
-                      outgrades.push(theadeers["a"+assignmentid];
+                      outgrades.push(theaders["a"+assignmentid]);
                     }
                     console.log(outgrades);
                 }
