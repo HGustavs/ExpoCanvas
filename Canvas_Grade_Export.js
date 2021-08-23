@@ -19,11 +19,11 @@ function makebutton()
 
     document.getElementById("hulk").addEventListener('click', function () 
     {
+        // Read student names
         var sven = document.getElementsByClassName("canvas_0");
         var stud=[];
         for(var j=0;j<sven.length;j++){
             var test = sven[j].getElementsByClassName("slick-row");
-            console.log(test.length);
             for (var i=0; i<test.length; i++) {
                 studid=test[i].className.substr(test[i].className.indexOf("_")+1);
                 var students=test[i].getElementsByTagName("a");
@@ -33,22 +33,7 @@ function makebutton()
             }            
         }
 
-        var sven = document.getElementsByClassName("viewport_1");
-        var thedata=[];
-        for(var j=0;j<sven.length;j++){
-            var test = sven[j].getElementsByClassName("slick-row");
-            console.log(test.length);
-            for (var i=0; i<test.length; i++) {
-                studid=test[i].className.substr(test[i].className.indexOf("_")+1);
-                var grades=test[i].getElementsByClassName("assignment");
-                for (var k=0; k<grades.length; k++) {
-                    assignmentid=grades[k].className.substr(grades[k].className.indexOf("_")+1);
-                    // console.log(assignmentid+" "+grades[k].innerText);     
-                }
-                
-            }                          
-        }
-
+        // Read headers
         var sven = document.getElementsByClassName("headers_1");
         var theaders=[];
         for(var j=0;j<sven.length;j++){
@@ -56,9 +41,30 @@ function makebutton()
             for (var i=0; i<test.length; i++) {
                 var assignmentid=test[i].className.substr(test[i].className.indexOf("_")+1);
                 var title=test[i].title;
-                console.log(assignmentid+" "+title);
+                // console.log(assignmentid+" "+title);
             }            
         }
+
+        // Read data
+        var sven = document.getElementsByClassName("viewport_1");
+        var thedata=[];
+        for(var j=0;j<sven.length;j++){
+            var test = sven[j].getElementsByClassName("slick-row");
+            for (var i=0; i<test.length; i++) {
+                studid=test[i].className.substr(test[i].className.indexOf("_")+1);
+                var grades=test[i].getElementsByClassName("assignment");
+                var outgrades=[];
+                outgrades.push(stud["s"+studid]);
+                for (var k=0; k<grades.length; k++) {
+                    var assignmentid=grades[k].className.substr(grades[k].className.indexOf("_")+1);
+                    var grade=grades[k].innerText;
+                    outgrades.push({assignment:assignment,grade:grade});
+                }
+                console.log(outgrades);
+            }                          
+        }
+
+        // Produce output
 
     });   
 }
