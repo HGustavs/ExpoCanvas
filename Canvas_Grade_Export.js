@@ -101,7 +101,7 @@ function makebutton()
           	str+="\n";
         }
 
-        console.log(thedata);
+        alert(str);
 
     });   
 }
