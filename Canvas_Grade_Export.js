@@ -19,8 +19,23 @@ function makebutton()
 
     document.addEventListener('click', function (event) 
     {
-        if(event.target.className=="event.target.className"){
-            alert("Hittat fram!");
+        if(event.target.className=="Grid__GradeCell__StartContainer"){
+            var assignmentstr=event.target.parentNode.parentNode.className;
+            var studentstr=event.target.parentNode.parentNode.parentNode.className;
+            var assignmentcode=assignmentstr.substr(assignmentstr.indexOf("_")+1);
+            assignmentcode=assignmentcode.split(" ")[0];
+
+            var studentcode=studentstr.substr(studentstr.indexOf("_")+1);;
+            studentcode=studentcode.split(" ")[0];
+
+            alert(assignmentcode+" "+studentcode);
+
+            var coursecode = "4780";
+
+            // https://his.instructure.com/courses/4780/gradebook/speed_grader?assignment_id=17002&student_id=52422
+
+            var speedurl=`https://his.instructure.com/courses/${coursecode}/gradebook/speed_grader?assignment_id=${assignmentcode}&student_id=${studentcode}`;
+            document.body.innerHTML = `<iframe src=${speedurl} ></iframe>` + document.body.innerHTML;
         }
     });    
   
