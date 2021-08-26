@@ -17,6 +17,13 @@ function makebutton()
         test[i].innerHTML="<button id='hulk'>Export</button>"+test[i].innerHTML;
     }  
 
+    document.addEventListener('click', function (event) 
+    {
+        if(event.target.className=="event.target.className"){
+            alert("Hittat fram!");
+        }
+    });    
+  
     document.getElementById("hulk").addEventListener('click', function () 
     {
         // Read student names
