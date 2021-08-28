@@ -12,6 +12,15 @@ setTimeout(function(){ makebutton(); }, 5000);
 
 function makebutton()
 {
+  
+    var css = 'h1 { .Grid__GradeCell__StartContainer: background:red; }',
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+    head.appendChild(style);
+
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+  
 		var test = document.getElementsByClassName("gradebook-menus");
   	for (var i=0; i<test.length; i++) {
         test[i].innerHTML="<button id='hulk'>Export</button>"+test[i].innerHTML;
