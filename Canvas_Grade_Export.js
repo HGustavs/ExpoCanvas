@@ -13,7 +13,7 @@ setTimeout(function(){ makebutton(); }, 5000);
 function makebutton()
 {
   
-    var css = 'h1 { .Grid__GradeCell__StartContainer: background:red; }',
+    var css = '.Grid__GradeCell__StartContainer { background-image: url("https://dugga.iit.his.se/Shared/icons/FistV.png"); background-repeat: no-repeat; background-size: 28px 28px;}',
     head = document.head || document.getElementsByTagName('head')[0],
     style = document.createElement('style');
     head.appendChild(style);
@@ -37,7 +37,7 @@ function makebutton()
             var studentcode=studentstr.substr(studentstr.indexOf("_")+1);;
             studentcode=studentcode.split(" ")[0];
 
-            alert(assignmentcode+" "+studentcode);
+            // alert(assignmentcode+" "+studentcode);
 
             var coursecode = "4780";
 
