@@ -39,12 +39,16 @@ function makebutton()
 
             // alert(assignmentcode+" "+studentcode);
 
-            var coursecode = "4780";
-
-            // https://his.instructure.com/courses/4780/gradebook/speed_grader?assignment_id=17002&student_id=52422
-
-            var speedurl=`https://his.instructure.com/courses/${coursecode}/gradebook/speed_grader?assignment_id=${assignmentcode}&student_id=${studentcode}`;
-            document.getElementById("header").innerHTML += `<div id='speedy-container' style='position:fixed;left:50px;top:50px;right:50px;bottom:50px;' ><iframe id='speedy' style='' width='100%' height='900px;' src=${speedurl} ></iframe><input style='position:absolute;top:0;right:0;' value='Dismiss' type='button' onclick='this.parentNode.style="display:none"'></div>`;
+            let tmpstr = document.location.href.replace("https://his.instructure.com/courses/","");
+            var coursecode=tmpstr.substr(0,tmpstr.indexOf('/'));
+            if(isNaN(coursecode)){
+                alert("Could not find current canvas coursecode:'"+coursecode+"'");
+            }else{
+                //console.log(tmpstr,tmpstr.substr(0,tmpstr.indexOf('/')),coursecode)
+                // https://his.instructure.com/courses/4780/gradebook/speed_grader?assignment_id=17002&student_id=52422
+                var speedurl=`https://his.instructure.com/courses/${coursecode}/gradebook/speed_grader?assignment_id=${assignmentcode}&student_id=${studentcode}`;
+                document.getElementById("header").innerHTML += `<div id='speedy-container' style='position:fixed;left:50px;top:50px;right:50px;bottom:50px;' ><iframe id='speedy' style='' width='100%' height='900px;' src=${speedurl} ></iframe><input style='position:absolute;top:0;right:0;' value='Dismiss' type='button' onclick='this.parentNode.style="display:none"'></div>`;
+            }
         }
     });    
   
