@@ -8,6 +8,22 @@
 // @grant       none
 // ==/UserScript==
 
+function colorGrades()
+{
+    var grades = document.getElementsByClassName('Grade');
+    for (var i=0, len=grades.length|0; i<len; i=i+1|0) {
+        var grade=grades[i];
+        // console.log("Grade:",grade.innerHTML)
+        if(grade.innerHTML=="G"){
+            grade.parentElement.parentElement.style.backgroundColor="#ccffcc";
+        }else if(grade.innerHTML=="U"){
+            grade.parentElement.parentElement.style.backgroundColor="#ffcccc";
+        }
+    }
+}
+
+var colorInterval = setInterval(colorGrades,250);
+
 setTimeout(function(){ makebutton(); }, 5000);
 
 function makebutton()
