@@ -28,7 +28,7 @@ setTimeout(function(){ makebutton(); }, 5000);
 
 function makebutton()
 {
-  
+
     var css = '.Grid__GradeCell__StartContainer { background-image: url("https://dugga.iit.his.se/Shared/icons/FistV.png"); background-repeat: no-repeat; background-size: 28px 28px;}',
     head = document.head || document.getElementsByTagName('head')[0],
     style = document.createElement('style');
@@ -36,39 +36,64 @@ function makebutton()
 
     style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
-  
+
 		var test = document.getElementsByClassName("gradebook-menus");
   	for (var i=0; i<test.length; i++) {
         test[i].innerHTML="<button id='hulk'>Export</button>"+test[i].innerHTML;
-    }  
+    }
 
-    document.addEventListener('click', function (event) 
+    document.addEventListener('click', function (event)
     {
         if(event.target.className=="Grid__GradeCell__StartContainer"){
-            var assignmentstr=event.target.parentNode.parentNode.className;
-            var studentstr=event.target.parentNode.parentNode.parentNode.className;
-            var assignmentcode=assignmentstr.substr(assignmentstr.indexOf("_")+1);
-            assignmentcode=assignmentcode.split(" ")[0];
-
-            var studentcode=studentstr.substr(studentstr.indexOf("_")+1);;
-            studentcode=studentcode.split(" ")[0];
-
-            // alert(assignmentcode+" "+studentcode);
-
-            let tmpstr = document.location.href.replace("https://his.instructure.com/courses/","");
-            var coursecode=tmpstr.substr(0,tmpstr.indexOf('/'));
-            if(isNaN(coursecode)){
-                alert("Could not find current canvas coursecode:'"+coursecode+"'");
+            //console.log(event.target, event.target.parentNode);
+            if(event.target.parentNode.className.indexOf("missing")!=-1){
+                //console.log("Student has NO submission",event.target.parentNode.className);
+                alert("Studenten har inte gjort någon inlämning på denna duggan!");
+                return;
             }else{
+                //console.log("Student has submission",event.target.parentNode.className);
+            }
+
+            var assignmentstr="UNK";
+            var studentstr="UNK";
+            var assignmentcode="UNK";
+            var has_submission="UNK";
+            if(event.target.parentNode && event.target.parentNode.parentNode){
+                //console.log("parent node",event.target.parentNode);
+                assignmentstr=event.target.parentNode.parentNode.className;
+            }
+            if(event.target.parentNode.parentNode && event.target.parentNode.parentNode.parentNode.className){
+                //console.log("parent parent node",event.target.parentNode.parentNode);
+                studentstr=event.target.parentNode.parentNode.parentNode.className;
+            }
+
+            //console.log(assignmentstr,studentstr,assignmentcode);
+
+            if(assignmentstr != "UNK" && studentstr !="UNK"){
+                assignmentcode=assignmentstr.substr(assignmentstr.indexOf("_")+1);
+                assignmentcode=assignmentcode.split(" ")[0];
+
+                var studentcode=studentstr.substr(studentstr.indexOf("_")+1);;
+                studentcode=studentcode.split(" ")[0];
+
+                // alert(assignmentcode+" "+studentcode);
+
+                let tmpstr = document.location.href.replace("https://his.instructure.com/courses/","");
+                var coursecode=tmpstr.substr(0,tmpstr.indexOf('/'));
+                if(isNaN(coursecode)){
+                    alert("Could not find current canvas coursecode:'"+coursecode+"'");
+                }
                 //console.log(tmpstr,tmpstr.substr(0,tmpstr.indexOf('/')),coursecode)
+
                 // https://his.instructure.com/courses/4780/gradebook/speed_grader?assignment_id=17002&student_id=52422
+
                 var speedurl=`https://his.instructure.com/courses/${coursecode}/gradebook/speed_grader?assignment_id=${assignmentcode}&student_id=${studentcode}`;
                 document.getElementById("header").innerHTML += `<div id='speedy-container' style='position:fixed;left:50px;top:50px;right:50px;bottom:50px;' ><iframe id='speedy' style='' width='100%' height='900px;' src=${speedurl} ></iframe><input style='position:absolute;top:0;right:0;' value='Dismiss' type='button' onclick='this.parentNode.style="display:none"'></div>`;
             }
         }
-    });    
-  
-    document.getElementById("hulk").addEventListener('click', function () 
+    });
+
+    document.getElementById("hulk").addEventListener('click', function ()
     {
         // Read student names
         var sven = document.getElementsByClassName("canvas_0");
@@ -81,7 +106,7 @@ function makebutton()
                 for (var k=0; k<students.length; k++) {
                     stud["s"+studid]=students[k].innerHTML;
                 }
-            }            
+            }
         }
 
         var thedata=[];
@@ -95,7 +120,7 @@ function makebutton()
                 var assignmentid=test[i].className.substr(test[i].className.indexOf("_")+1);
                 var title=test[i].title;
                 theaders["a"+assignmentid]=title;
-            }            
+            }
         }
 
         // Read data
@@ -127,12 +152,12 @@ function makebutton()
                   outgrades.push({assignment:assignmentid, grade:grade});
                 }
                 thedata.push(outgrades);
-            }                          
+            }
         }
 
         // Produce output
         var str="";
-      
+
       	for(var i=0;i<thedata.length;i++){
           	if(i==0){
                 for(var j=0;j<thedata[i].length;j++){
@@ -154,5 +179,5 @@ function makebutton()
 
         alert(str);
 
-    });   
+    });
 }
