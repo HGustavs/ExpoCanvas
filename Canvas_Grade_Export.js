@@ -8,8 +8,37 @@
 // @grant       none
 // ==/UserScript==
 
+localStorage.removeItem('tmp-gradebook');
+
 function colorGrades()
 {
+    let gradebook=localStorage.getItem('tmp-gradebook');
+    if(gradebook === null){
+        gradebook={};
+    }else{
+        gradebook=JSON.parse(gradebook);
+    }
+    //console.log(gradebook);
+    //document.querySelector('.student_53927 .assignment_17031 .Grid__GradeCell__StartContainer').style.backgroundColor='aqua';
+    const student_entries = Object.entries(gradebook);
+    for([student, assignments] of student_entries) {
+        const assignment_entries = Object.entries(assignments);
+        for([assignment, result] of assignment_entries) {
+            let el=document.querySelector(`.student_${student} .assignment_${assignment} .gradebook-cell`);
+            if(el){
+                if(result=="G"){
+                    el.style.backgroundColor="#ccffcc80";
+                }else if(result=="U"){
+                    el.style.backgroundColor="#ffcccc80";
+                }else if(result=="grading"){
+                    el.style.backgroundColor="#ffff0080";
+                }
+
+            }
+            //console.log(student,assignment,result);
+        }
+    }
+
     var grades = document.getElementsByClassName('Grade');
     for (var i=0, len=grades.length|0; i<len; i=i+1|0) {
         var grade=grades[i];
@@ -20,6 +49,7 @@ function colorGrades()
             grade.parentElement.parentElement.style.backgroundColor="#ffcccc";
         }
     }
+
 }
 
 var colorInterval = setInterval(colorGrades,250);
@@ -44,7 +74,61 @@ function makebutton()
 
     document.addEventListener('click', function (event)
     {
+        let gradebook=localStorage.getItem('tmp-gradebook');
+        if(gradebook === null){
+            gradebook={};
+        }else{
+            gradebook=JSON.parse(gradebook);
+        }
+        let target=event.target;
+        var slick_cell = target.closest(".slick-cell");
+        var slick_row = target.closest(".slick-row");
+        var assignment=null;
+        var student=null;
+
+        if(slick_cell){
+            const clsArr=slick_cell.classList;
+            for(const cls of clsArr){
+                if(cls.indexOf('assignment_')!=-1){
+                    assignment=cls.split("_")[1];
+                    break;
+                }
+            }
+        }
+        if(slick_row){
+            const clsArr=slick_row.classList;
+            for(const cls of clsArr){
+                if(cls.indexOf('student_')!=-1){
+                    student=cls.split("_")[1];
+                    break;
+                }
+            }
+        }
+        console.log(target,slick_cell,assignment,slick_row,student);
+        if(student && assignment){
+            if(gradebook[student] === undefined){
+                gradebook[student]={};
+            }
+            if(gradebook[student][assignment] === undefined) {
+                gradebook[student][assignment]="grading";
+                localStorage.setItem('tmp-gradebook',JSON.stringify(gradebook))
+            }
+            let tmpstr = document.location.href.replace("https://his.instructure.com/courses/","");
+            var coursecode=tmpstr.substr(0,tmpstr.indexOf('/'));
+            if(isNaN(coursecode)){
+                alert("Could not find current canvas coursecode:'"+coursecode+"'");
+            }
+            var speedurl=`https://his.instructure.com/courses/${coursecode}/gradebook/speed_grader?assignment_id=${assignment}&student_id=${student}`;
+            document.getElementById("header").innerHTML += `
+                <div id='speedy-container' style='position:fixed;left:50px;top:50px;right:50px;bottom:50px;' >
+                <iframe id='speedy' style='' width='100%' height='900px;' src=${speedurl} ></iframe>
+                <input style='position:absolute;top:0;right:0;' value='Dismiss' type='button' onclick='this.parentNode.style="display:none";var speedyContainerEl=this.parentNode;this.parentNode.parentNode.removeChild(speedyContainerEl)'>
+                </div>`;
+
+        }
+        /*
         if(event.target.className=="Grid__GradeCell__StartContainer"){
+            event.target.style.backgroundColor="rgba(255,255,0,0.3)";
             //console.log(event.target, event.target.parentNode);
             if(event.target.parentNode.className.indexOf("missing")!=-1){
                 //console.log("Student has NO submission",event.target.parentNode.className);
@@ -88,9 +172,14 @@ function makebutton()
                 // https://his.instructure.com/courses/4780/gradebook/speed_grader?assignment_id=17002&student_id=52422
 
                 var speedurl=`https://his.instructure.com/courses/${coursecode}/gradebook/speed_grader?assignment_id=${assignmentcode}&student_id=${studentcode}`;
-                document.getElementById("header").innerHTML += `<div id='speedy-container' style='position:fixed;left:50px;top:50px;right:50px;bottom:50px;' ><iframe id='speedy' style='' width='100%' height='900px;' src=${speedurl} ></iframe><input style='position:absolute;top:0;right:0;' value='Dismiss' type='button' onclick='this.parentNode.style="display:none"'></div>`;
+                document.getElementById("header").innerHTML += `
+                <div id='speedy-container' style='position:fixed;left:50px;top:50px;right:50px;bottom:50px;' >
+                <iframe id='speedy' style='' width='100%' height='900px;' src=${speedurl} ></iframe>
+                <input style='position:absolute;top:0;right:0;' value='Dismiss' type='button' onclick='this.parentNode.style="display:none";var speedyContainerEl=this.parentNode;this.parentNode.parentNode.removeChild(speedyContainerEl)'>
+                </div>`;
             }
         }
+        */
     });
 
     document.getElementById("hulk").addEventListener('click', function ()
